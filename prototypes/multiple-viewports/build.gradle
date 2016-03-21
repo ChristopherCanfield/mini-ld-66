@@ -1,0 +1,75 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+eclipse {
+	project {
+		name = 'jme-prototype-multiple-viewports'
+	}
+}
+	
+
+sourceSets.main.java.srcDirs = [ "src/", "assets/" ]
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+ext.jmeVersion = "[3.1,)"
+
+dependencies {
+    compile "org.jmonkeyengine:jme3-core:$jmeVersion"
+    compile "org.jmonkeyengine:jme3-desktop:$jmeVersion"
+    compile "org.jmonkeyengine:jme3-lwjgl:$jmeVersion"
+	compile "org.jmonkeyengine:jme3-blender:$jmeVersion"
+	//compile "org.jmonkeyengine:jme3-bullet-native:$jmeVersion"
+	compile "org.jmonkeyengine:jme3-effects:$jmeVersion"
+	compile "org.jmonkeyengine:jme3-niftygui:$jmeVersion"
+	compile "org.jmonkeyengine:jme3-plugins:$jmeVersion"
+	//compile "org.jmonkeyengine:jme3-terrain:$jmeVersion"
+	//compile "org.jmonkeyengine:jme3-jogg:$jmeVersion"
+	
+	//compile 'com.google.guava:guava:19.0'
+}
+
+task wrapper(type: Wrapper) {
+}
+
+// The createDirs task creates the jmonkey directory structure.
+task createDirs << {
+   
+    // TODO: change this to whatever the base package is.
+    def pkg = 'mygame'
+    def dirs = [
+        file("./src/main/java/$pkg"),
+        file("./src/main/resources"),
+        file("./assets/Interface"),
+        file("./assets/MatDefs"),
+        file("./assets/Materials"),
+        file("./assets/Models"),
+        file("./assets/Scenes"),
+        file("./assets/Shaders"),
+        file("./assets/Sounds"),
+        file("./assets/Textures"),   
+    ]
+   
+    dirs.each {
+        if( !it.exists() ) {
+            println "Creating " + it
+            it.mkdirs()
+        }
+        if( it.listFiles().length == 0 ) {
+            def stub = new File(it, 'removeme.txt')
+            println "Creating stub file to allow git checkin, file:$stub"
+            stub.text = "Remove me when there are files here."
+        }
+    }
+}
+
+test {
+    systemProperties 'property': 'value'
+}
