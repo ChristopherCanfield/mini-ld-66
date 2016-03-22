@@ -17,6 +17,9 @@ sourceSets.main.java.srcDirs = [ "src/", "assets/" ]
 repositories {
     mavenCentral()
     jcenter()
+	//maven {
+    //    url 'http://updates.jmonkeyengine.org/maven'
+    //}
 }
 
 ext.jmeVersion = "[3.1,)"

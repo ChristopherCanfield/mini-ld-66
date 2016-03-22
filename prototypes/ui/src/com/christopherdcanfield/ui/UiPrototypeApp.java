@@ -1,6 +1,9 @@
 package com.christopherdcanfield.ui;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.niftygui.NiftyJmeDisplay;
+
+import de.lessvoid.nifty.Nifty;
 
 public class UiPrototypeApp extends SimpleApplication
 {
