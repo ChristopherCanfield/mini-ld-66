@@ -1,6 +1,11 @@
 package com.christopherdcanfield.viewport;
 
+import javax.swing.JComboBox.KeySelectionManager;
+
 import com.jme3.app.SimpleApplication;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.Camera;
@@ -35,5 +40,10 @@ public class MultipleViewportsApp extends SimpleApplication
         mat.setColor("Color", ColorRGBA.Blue);   // set color of material to blue
         geom.setMaterial(mat);                   // set the cube's material
         rootNode.attachChild(geom);              // make the cube appear in the scene
+
+        inputManager.addMapping("move-camera-right", new KeyTrigger(KeyInput.KEY_RIGHT));
+        inputManager.addListener((ActionListener)(String name, boolean isPressed, float tpf) -> {
+
+        }, "move-camera-right");
 	}
 }
