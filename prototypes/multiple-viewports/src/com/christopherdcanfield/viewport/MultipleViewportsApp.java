@@ -1,13 +1,16 @@
 package com.christopherdcanfield.viewport;
 
-import javax.swing.JComboBox.KeySelectionManager;
-
 import com.jme3.app.SimpleApplication;
+import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Ray;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
@@ -30,6 +33,8 @@ public class MultipleViewportsApp extends SimpleApplication
 	private boolean moveCameraNorth;
 	private boolean moveCameraSouth;
 
+	private Node units;
+
 	@Override
 	public void simpleInitApp()
 	{
@@ -42,13 +47,16 @@ public class MultipleViewportsApp extends SimpleApplication
 		viewport.attachScene(rootNode);
 		viewport.setBackgroundColor(new ColorRGBA(1, 1, 1, 0.55f));
 
+		units = new Node("units");
+		rootNode.attachChild(units);
+
 		Box b = new Box(1, 1, 1); // create cube shape
-        Geometry geom = new Geometry("Box", b);  // create cube geometry from the shape
+        Geometry geom = new Geometry("box", b);  // create cube geometry from the shape
         Material mat = new Material(assetManager,
           "Common/MatDefs/Misc/Unshaded.j3md");  // create a simple material
         mat.setColor("Color", ColorRGBA.Blue);   // set color of material to blue
         geom.setMaterial(mat);                   // set the cube's material
-        rootNode.attachChild(geom);              // make the cube appear in the scene
+        units.attachChild(geom);              // make the cube appear in the scene
 
         inputManager.addMapping("move-camera-east", new KeyTrigger(KeyInput.KEY_RIGHT));
         inputManager.addMapping("move-camera-west", new KeyTrigger(KeyInput.KEY_LEFT));
@@ -65,6 +73,26 @@ public class MultipleViewportsApp extends SimpleApplication
         		moveCameraSouth = isPressed;
         	}
         }, "move-camera-east", "move-camera-west", "move-camera-north", "move-camera-south");
+
+        inputManager.addMapping("click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        inputManager.addListener((ActionListener)(String name, boolean isPressed, float tpf) -> {
+        	if (!isPressed) {
+	        	CollisionResults results = new CollisionResults();
+	        	Vector2f click2d = inputManager.getCursorPosition();
+	        	Vector3f click3d = cam.getWorldCoordinates(
+	        	    new Vector2f(click2d.x, click2d.y), 0f).clone();
+	        	Vector3f dir = cam.getWorldCoordinates(
+	        	    new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
+	        	Ray ray = new Ray(click3d, dir);
+    	        // DO NOT check collision with the root node, or else ALL collisions will hit the skybox! Always make a separate node for objects you want to collide with.
+    	        units.collideWith(ray, results);
+    	        System.out.println("Collisions: " + results.size());
+
+    	        if (results.size() > 0) {
+    	        	System.out.println(results.getClosestCollision().getGeometry().getName());
+    	        }
+    		}
+        }, "click");
 	}
 
 	@Override
