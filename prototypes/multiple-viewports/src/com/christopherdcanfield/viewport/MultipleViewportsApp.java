@@ -1,5 +1,7 @@
 package com.christopherdcanfield.viewport;
 
+import java.util.ArrayList;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
@@ -35,6 +37,8 @@ public class MultipleViewportsApp extends SimpleApplication
 
 	private Node units;
 
+	private ArrayList<Geometry> selectedUnits = new ArrayList<>();
+
 	@Override
 	public void simpleInitApp()
 	{
@@ -50,13 +54,13 @@ public class MultipleViewportsApp extends SimpleApplication
 		units = new Node("units");
 		rootNode.attachChild(units);
 
-		Box b = new Box(1, 1, 1); // create cube shape
-        Geometry geom = new Geometry("box", b);  // create cube geometry from the shape
+		Box b = new Box(1, 1, 1);
+        Geometry geom = new Geometry("box", b);
         Material mat = new Material(assetManager,
-          "Common/MatDefs/Misc/Unshaded.j3md");  // create a simple material
-        mat.setColor("Color", ColorRGBA.Blue);   // set color of material to blue
-        geom.setMaterial(mat);                   // set the cube's material
-        units.attachChild(geom);              // make the cube appear in the scene
+          "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", ColorRGBA.Blue);
+        geom.setMaterial(mat);
+        units.attachChild(geom);
 
         inputManager.addMapping("move-camera-east", new KeyTrigger(KeyInput.KEY_RIGHT));
         inputManager.addMapping("move-camera-west", new KeyTrigger(KeyInput.KEY_LEFT));
@@ -88,8 +92,17 @@ public class MultipleViewportsApp extends SimpleApplication
     	        units.collideWith(ray, results);
     	        System.out.println("Collisions: " + results.size());
 
+    	        for (Geometry geometry : selectedUnits) {
+	        		geometry.getMaterial().setColor("Color", ColorRGBA.Blue);
+	        	}
+
     	        if (results.size() > 0) {
     	        	System.out.println(results.getClosestCollision().getGeometry().getName());
+    	        	Geometry closest = results.getClosestCollision().getGeometry();
+    	        	closest.getMaterial().setColor("Color", ColorRGBA.Cyan);
+    	        	selectedUnits.add(closest);
+    	        } else {
+    	        	selectedUnits.clear();
     	        }
     		}
         }, "click");
