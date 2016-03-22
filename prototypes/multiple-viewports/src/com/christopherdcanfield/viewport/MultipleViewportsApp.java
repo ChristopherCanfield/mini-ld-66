@@ -57,9 +57,10 @@ public class MultipleViewportsApp extends SimpleApplication
 		Box b = new Box(1, 1, 1);
         Geometry geom = new Geometry("box", b);
         Material mat = new Material(assetManager,
-          "Common/MatDefs/Misc/Unshaded.j3md");
+        		"Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         geom.setMaterial(mat);
+        geom.setUserData("originalColor", ColorRGBA.Blue);
         units.attachChild(geom);
 
         inputManager.addMapping("move-camera-east", new KeyTrigger(KeyInput.KEY_RIGHT));
@@ -93,7 +94,7 @@ public class MultipleViewportsApp extends SimpleApplication
     	        System.out.println("Collisions: " + results.size());
 
     	        for (Geometry geometry : selectedUnits) {
-	        		geometry.getMaterial().setColor("Color", ColorRGBA.Blue);
+	        		geometry.getMaterial().setColor("Color", geometry.getUserData("originalColor"));
 	        	}
 
     	        if (results.size() > 0) {
