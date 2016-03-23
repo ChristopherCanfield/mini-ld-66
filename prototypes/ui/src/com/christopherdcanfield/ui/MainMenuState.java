@@ -29,7 +29,14 @@ public class MainMenuState extends AbstractAppState implements ScreenController
 				assetManager, inputManager, audioRenderer, guiViewPort);
 		Nifty nifty = niftyDisplay.getNifty();
 		guiViewPort.addProcessor(niftyDisplay);
-//		nifty.fromXml("Interface/MainMenu.xml", "start");
+
+		// nifty.validateXml is only needed when debugging.
+		try {
+			nifty.validateXml("Interface/MainMenu.xml");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 		nifty.fromXml("Interface/MainMenu.xml", "start", this);
 	}
 
