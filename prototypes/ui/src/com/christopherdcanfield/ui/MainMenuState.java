@@ -75,4 +75,9 @@ public class MainMenuState extends AbstractAppState implements ScreenController
 	{
 		System.out.println("MainMenuState.onEndScreen");
 	}
+
+	public void onHelloWorldTextClicked()
+	{
+		System.out.println("onHelloWorldTextClicked");
+	}
 }
