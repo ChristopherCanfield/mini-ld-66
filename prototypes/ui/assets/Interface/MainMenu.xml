@@ -8,13 +8,13 @@
 		    
 		</layer>
 		<layer id="foreground" backgroundColor="#cccf" childLayout="vertical">
-			<panel id="panel_top" height="25%" width="75%" align="center" childLayout="center"
+			<panel id="panel_top" height="25%" width="65%" align="center" childLayout="center"
 			       backgroundColor="#f008">  
 			</panel>
-			<panel id="panel_mid" height="50%" width="75%" align="center" childLayout="center"
+			<panel id="panel_mid" height="50%" width="65%" align="center" childLayout="center"
 			       backgroundColor="#0f08">  
 			</panel>
-			<panel id="panel_bottom" height="25%" width="75%" align="center" childLayout="horizontal"
+			<panel id="panel_bottom" height="25%" width="65%" align="center" childLayout="horizontal"
 			       backgroundColor="#00f8">  
 				<panel id="panel_bottom_left" height="50%" width="50%" valign="center" childLayout="center" 
 			       backgroundColor="#44f8">  

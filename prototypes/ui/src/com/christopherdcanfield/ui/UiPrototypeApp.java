@@ -13,6 +13,8 @@ public class UiPrototypeApp extends SimpleApplication
 	@Override
 	public void simpleInitApp()
 	{
+		flyCam.setEnabled(false);
+
 		MainMenuState state = new MainMenuState();
 		stateManager.attach(state);
 	}
