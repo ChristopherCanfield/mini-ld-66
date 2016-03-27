@@ -11,6 +11,8 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -46,6 +48,9 @@ public class MultipleViewportsApp extends SimpleApplication
 	public void simpleInitApp()
 	{
 		flyCam.setEnabled(false);
+
+		cam.setLocation(new Vector3f(0.020503234f, 7.2696285f, 13.67754f));
+		cam.setRotation(new Quaternion(0.0061276876f, 0.9466344f, -0.32174635f, 0.018028809f));
 
 		camera2 = cam.clone();
 		camera2.setViewPort(0.85f, 0.98f, 0.85f, 0.98f);
@@ -120,7 +125,9 @@ public class MultipleViewportsApp extends SimpleApplication
         cube1Tex.setWrap(WrapMode.Repeat);
         cube1Mat.setTexture("ColorMap", cube1Tex);
         cube1Geo.setMaterial(cube1Mat);
+        cube1Geo.rotate(90 * FastMath.DEG_TO_RAD, 0, 0);
         rootNode.attachChild(cube1Geo);
+
 	}
 
 	@Override
@@ -135,11 +142,11 @@ public class MultipleViewportsApp extends SimpleApplication
         	cam.setLocation(newCameraPosition);
 		}
 		else if (moveCameraNorth) {
-			Vector3f newCameraPosition = cam.getLocation().add(0, 0.01f, 0);
+			Vector3f newCameraPosition = cam.getLocation().add(0, 0, -0.01f);
         	cam.setLocation(newCameraPosition);
 		}
 		else if (moveCameraSouth) {
-			Vector3f newCameraPosition = cam.getLocation().add(0, -0.01f, 0);
+			Vector3f newCameraPosition = cam.getLocation().add(0, 0, 0.01f);
         	cam.setLocation(newCameraPosition);
 		}
 	}
