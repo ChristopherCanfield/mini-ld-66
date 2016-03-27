@@ -18,7 +18,10 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
+import com.jme3.texture.Texture;
+import com.jme3.texture.Texture.WrapMode;
 
 public class MultipleViewportsApp extends SimpleApplication
 {
@@ -107,6 +110,17 @@ public class MultipleViewportsApp extends SimpleApplication
     	        }
     		}
         }, "click");
+
+        Box cube1Mesh = new Box(10f, 10f, 1f);
+        cube1Mesh.scaleTextureCoordinates(new Vector2f(5, 5));
+        Geometry cube1Geo = new Geometry("My Textured Box", cube1Mesh);
+        cube1Geo.setLocalTranslation(new Vector3f(0, 0, 0));
+        Material cube1Mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Texture cube1Tex = assetManager.loadTexture("Models/grass.png");
+        cube1Tex.setWrap(WrapMode.Repeat);
+        cube1Mat.setTexture("ColorMap", cube1Tex);
+        cube1Geo.setMaterial(cube1Mat);
+        rootNode.attachChild(cube1Geo);
 	}
 
 	@Override
